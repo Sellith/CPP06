@@ -44,7 +44,11 @@ static void convertFromInt( std::string const src )
 {
 	int		ires = static_cast<int>(src.at(0));
 
-	std::cout << "Char : " << static_cast<char>(ires) << "\n";
+	if (ires > '~' || ires < ' ')
+		std::cout << "Char : Non displayable\n";
+	else
+		std::cout << "Char : " << static_cast<char>(ires) << "\n";
+
 	std::cout << "Int : " << ires << "\n";
 	std::cout << "Float : " << static_cast<float>(ires) << ".0f\n";
 	std::cout << "Double : " << static_cast<double>(ires) << ".0" << std::endl;
@@ -64,7 +68,7 @@ static void convertFromFD( std::string const src, bool exception )
 		return ;
 	}
 
-	if (ires > 176 || ires < ' ')
+	if (ires > '~' || ires < ' ')
 		std::cout << "Char : Non displayable\n";
 	else
 		std::cout << "Char : " << static_cast<char>(ires) << "\n";
