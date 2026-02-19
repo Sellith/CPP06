@@ -24,7 +24,7 @@
 /*                                                                                                                 */
 /* *************************************************************************************************************** */
 
-#include "include/ScalarConverter.hpp"
+#include "ScalarConverter.hpp"
 
 ScalarConverter::ScalarConverter( void ) {}
 ScalarConverter::ScalarConverter( ScalarConverter const & src ) {static_cast<void>(src);}
@@ -82,14 +82,13 @@ static void convertFromFD( std::string const src, bool exception )
 
 }
 
-
 static bool checkArgs( std::string src ) 
 {
 	std::string::iterator	it = src.begin();
 
-	if (*it != '-' && *it != '+' && !isdigit(*it++))
+	if (*it != '-' && *it != '+' && !isdigit(*it))
 		return (false);
-
+	it++;
 	while (it != src.end()) {
 		if (*it == '.'){
 			it++;
