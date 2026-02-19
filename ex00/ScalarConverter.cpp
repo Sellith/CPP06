@@ -24,7 +24,7 @@
 /*                                                                                                                 */
 /* *************************************************************************************************************** */
 
-#include "ScalarConverter.hpp"
+#include "include/ScalarConverter.hpp"
 
 ScalarConverter::ScalarConverter( void ) {}
 ScalarConverter::ScalarConverter( ScalarConverter const & src ) {static_cast<void>(src);}
@@ -40,42 +40,23 @@ static void convertFromChar ( std::string const src )
 	std::cout << "Double : " << static_cast<double>(ires) << ".0" << std::endl;
 }
 
-static void convertFromInt( std::string const src ) 
-{
-	int		ires = static_cast<int>(src.at(0));
-
-	if (ires > '~' || ires < ' ')
-		std::cout << "Char : Non displayable\n";
-	else
-		std::cout << "Char : " << static_cast<char>(ires) << "\n";
-
-	std::cout << "Int : " << ires << "\n";
-	std::cout << "Float : " << static_cast<float>(ires) << ".0f\n";
-	std::cout << "Double : " << static_cast<double>(ires) << ".0" << std::endl;
-}
-
-static void convertFromFD( std::string const src, bool exception ) 
+static void convertFromNum( std::string const src, bool exception ) 
 {
 	float	fres = strtof(src.c_str(), NULL);
 	double	dres = strtod(src.c_str(), NULL);
-	int		ires = static_cast<int>(fres);
+	long	lres = strtol(src.c_str(), NULL, 10);
 
-	if (exception) {
-		std::cout << "Char : conversion impossible"  << "\n";
-		std::cout << "Int : conversion impossible" << "\n";
-		std::cout << "Float : " << fres << "f\n";
-		std::cout << "Double : " << dres << std::endl;
-		return ;
-	}
-
-	if (ires > '~' || ires < ' ')
-		std::cout << "Char : Non displayable\n";
+	if (lres < ' ' || lres > '~')
+		std::cout << "Char : impossible\n";
 	else
-		std::cout << "Char : " << static_cast<char>(ires) << "\n";
+		std::cout << "Char : " << static_cast<char>(lres) << "\n";
+	
+	if (lres < INT_MIN || lres > INT_MAX || exception)
+		std::cout << "Int : impossible\n";
+	else
+		std::cout << "Int : " << static_cast<int>(lres) << "\n";
 
-	std::cout << "Int : " << ires << "\n";
-
-	if (static_cast<double>(ires) == dres) {
+	if (static_cast<double>(lres) == dres && src.length() < 6) {
 		std::cout << "Float : " << fres << ".0f\n";
 		std::cout << "Double : " << dres << ".0" << std::endl;
 	}
@@ -137,8 +118,5 @@ void ScalarConverter::convert ( std::string const src )
 		}
 	}
 
-	if (src.find(".") || exception)
-		convertFromFD(src, exception);
-	else
-		convertFromInt(src);
+	convertFromNum(src, exception);
 }
