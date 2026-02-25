@@ -35,7 +35,7 @@ D_BUILD_DIR	:=	$(BUILD_DIR)/default_build
 DEBUG_DIR	:=	$(BUILD_DIR)/debug_build
 
 
-TARGET		:=	Serializer
+TARGET		:=	Base
 TARGETDEBUG	:=	Debug_ScalarConvert
 NAME		:=	$(BIN_DIR)/$(TARGET)
 NAMEDEBUG	:=	$(BIN_DIR)/$(TARGETDEBUG)
@@ -53,7 +53,7 @@ CLR_WTH		:=	\033[1;97m
 
 ERS_STR		:=	\033[2K\r
 
-SRCS		:=	main.cpp Serializer.cpp
+SRCS		:=	main.cpp Base.cpp
 
 OBJS		:=	$(patsubst %.cpp, $(D_BUILD_DIR)/%.o, $(SRCS))
 OBJS_DEBUG	:=	$(patsubst %.cpp, $(DEBUG_DIR)/%.o, $(SRCS))

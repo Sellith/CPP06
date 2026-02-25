@@ -1,5 +1,5 @@
 /* *************************************************************************************************************** */
-/*   Base.hpp                                                                                                      */
+/*   includes.h                                                                                                    */
 /*   By: lvan-bre                                                                   .,                             */
 /*                                                                                 okxl                            */
 /*                                                                                xkddo                            */
@@ -24,16 +24,15 @@
 /*                                                                                                                 */
 /* *************************************************************************************************************** */
 
-#ifndef BASE_HPP
-# define BASE_HPP
+#ifndef INCLUDES_H
+# define INCLUDES_H
 
-class Base 
-{
+# include <iostream>
+# include <cstdlib>
+# include <ctime>
 
-public:
-
-    virtual ~Base( void );
-
-};
+# include "A.hpp"
+# include "B.hpp"
+# include "C.hpp"
 
 #endif

@@ -1,5 +1,5 @@
 /* *************************************************************************************************************** */
-/*   Base.hpp                                                                                                      */
+/*   main.cpp                                                                                                      */
 /*   By: lvan-bre                                                                   .,                             */
 /*                                                                                 okxl                            */
 /*                                                                                xkddo                            */
@@ -24,16 +24,46 @@
 /*                                                                                                                 */
 /* *************************************************************************************************************** */
 
-#ifndef BASE_HPP
-# define BASE_HPP
+#include "includes.h"
 
-class Base 
+static Base *   generate ( void )
 {
+    int base = std::rand() % 3;
 
-public:
+    Base *  ret;
 
-    virtual ~Base( void );
+    switch (base) {
+        case 0: 
+            ret = new A;
+            std::cout << "generate : Generating an A class" << std::endl;
+            return (ret);
+        case 1:
+            ret = new B;
+            std::cout << "generate : Generating an B class" << std::endl;
+            return (ret);
+        default:
+            ret = new C;
+            std::cout << "tenerate : Generating an C class" << std::endl;
+            return (ret);
+    }
+}
 
-};
+static void identify ( Base * p )
+{
+    
+}
 
-#endif
+static void identify ( Base & p )
+{
+    
+}
+
+int main ( void )
+{
+    std::srand(time(NULL));
+
+    Base *  base = generate();
+
+    if (!base)
+        return 1;
+}
