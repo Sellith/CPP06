@@ -1,5 +1,5 @@
 /* *************************************************************************************************************** */
-/*   ScalarConverter.cpp                                                                                           */
+/*   main.cpp                                                                                                      */
 /*   By: lvan-bre                                                                   .,                             */
 /*                                                                                 okxl                            */
 /*                                                                                xkddo                            */
@@ -24,104 +24,28 @@
 /*                                                                                                                 */
 /* *************************************************************************************************************** */
 
-#include "include/ScalarConverter.hpp"
+#include "Serializer.hpp"
 
-ScalarConverter::ScalarConverter( void ) {}
-ScalarConverter::ScalarConverter( ScalarConverter const & src ) {(void)src;}
-ScalarConverter::~ScalarConverter( void ) {}
-
-ScalarConverter & ScalarConverter::operator= ( ScalarConverter const & src ) {
-	(void)src;
-	return (*this);
-}
-
-static void convertFromChar ( std::string const src ) 
+int main ( void ) 
 {
-	int		ires = static_cast<int>(src.at(0));
+	Data *		data = new Data(1, 180712, "the boss");
 
-	std::cout << "Char : " << src << "\n";
-	std::cout << "Int : " << ires << "\n";
-	std::cout << "Float : " << static_cast<float>(ires) << ".0f\n";
-	std::cout << "Double : " << static_cast<double>(ires) << ".0" << std::endl;
-}
+	uintptr_t	rawPtr = Serializer::serialize(data);
+	Data *		data2 = Serializer::deserialize(rawPtr);
 
-static void convertFromNum( std::string const src, bool exception ) 
-{
-	float	fres = strtof(src.c_str(), NULL);
-	double	dres = strtod(src.c_str(), NULL);
-	long	lres = strtol(src.c_str(), NULL, 10);
-
-	if (lres < ' ' || lres > '~')
-		std::cout << "Char : impossible\n";
-	else
-		std::cout << "Char : " << static_cast<char>(lres) << "\n";
+	std::cout << CYAN << "Data :\n" << WHITE << *data << "\n";
+	std::cout << CYAN << "Raw :\n" << WHITE << rawPtr << "\n";
+	std::cout << CYAN << "Data Deserialized :\n" << WHITE << *data2 << RESET << std::endl;
 	
-	if (lres < INT_MIN || lres > INT_MAX || exception)
-		std::cout << "Int : impossible\n";
-	else
-		std::cout << "Int : " << static_cast<int>(lres) << "\n";
-
-	if (static_cast<double>(lres) == dres && src.length() < 6) {
-		std::cout << "Float : " << fres << ".0f\n";
-		std::cout << "Double : " << dres << ".0" << std::endl;
-	}
-	else {
-		std::cout << "Float : " << fres << "f\n";
-		std::cout << "Double : " << dres << std::endl;
-	}
-
-}
-
-static bool checkArgs( std::string src ) 
-{
-	std::string::iterator	it = src.begin();
-
-	if (*it != '-' && *it != '+' && !isdigit(*it))
-		return (false);
-	it++;
-	while (it != src.end()) {
-		if (*it == '.'){
-			it++;
-			if (!isdigit(*it))
-				return (false);
-		}
-		if (*it == 'f'){
-			it++;
-			if (it != src.end())
-				return (false);
-			else
-				return (true);
-		}
-		if (!isdigit(*it++))
-			return (false);
-	}
-	return (true);
-}
-
-void ScalarConverter::convert ( std::string const src ) 
-{
-
-	std::string	type[6] = { "-inf", "+inf", "nan", "-inff", "+inff", "nanf"};
-	bool		exception = false;
-
-	for (int i = 0; i < 6; i++)
-		if (src == type[i]) {
-			exception = true;
-			break ;
-		}
-
-	if (src.length() > 1 && !exception && !checkArgs(src)){
-		std::cout << "incorrect input" << std::endl;
-		return ;
-	}
-
-	if (!std::isdigit(src.at(0)))
-	{
-		if (src.length() == 1) {
-			convertFromChar(src);
-			return ;
-		}
-	}
-
-	convertFromNum(src, exception);
+	Data *		data3 = new Data(0, 0, "wfpwfbtdv.xc");
+	
+	uintptr_t	rawPtr2 = Serializer::serialize(data3);
+	Data *		data4 = Serializer::deserialize(rawPtr2);
+	
+	std::cout << CYAN << "Data :\n" << WHITE << *data3 << "\n";
+	std::cout << CYAN << "Raw :\n" << WHITE << rawPtr2 << "\n";
+	std::cout << CYAN << "Data Deserialized :\n" << WHITE << *data4 << RESET << std::endl;
+	
+	delete data;
+	delete data3;
 }

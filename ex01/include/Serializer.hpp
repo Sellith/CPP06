@@ -1,5 +1,5 @@
 /* *************************************************************************************************************** */
-/*   ScalarConverter.cpp                                                                                           */
+/*   Serializer.hpp                                                                                                */
 /*   By: lvan-bre                                                                   .,                             */
 /*                                                                                 okxl                            */
 /*                                                                                xkddo                            */
@@ -24,104 +24,50 @@
 /*                                                                                                                 */
 /* *************************************************************************************************************** */
 
-#include "include/ScalarConverter.hpp"
+#ifndef SERIALIZER_HPP
+# define SERIALIZER_HPP
 
-ScalarConverter::ScalarConverter( void ) {}
-ScalarConverter::ScalarConverter( ScalarConverter const & src ) {(void)src;}
-ScalarConverter::~ScalarConverter( void ) {}
+# include <iostream>
+# include <stdint.h>
+# include <cstring>
 
-ScalarConverter & ScalarConverter::operator= ( ScalarConverter const & src ) {
-	(void)src;
-	return (*this);
-}
+# define RED	"\e[1;91m"
+# define GREEN	"\e[1;92m"
+# define YELLOW	"\e[1;93m"
+# define PURPLE	"\e[1;95m"
+# define CYAN	"\e[1;96m"
+# define WHITE	"\e[1;97m"
+# define RESET	"\e[0m"
 
-static void convertFromChar ( std::string const src ) 
+struct Data
 {
-	int		ires = static_cast<int>(src.at(0));
+	int					Grade_;
+	const int 			Id_;
+	const std::string	Name_;
 
-	std::cout << "Char : " << src << "\n";
-	std::cout << "Int : " << ires << "\n";
-	std::cout << "Float : " << static_cast<float>(ires) << ".0f\n";
-	std::cout << "Double : " << static_cast<double>(ires) << ".0" << std::endl;
-}
+	Data	( int Grade, int Id, std::string Name );
+};
 
-static void convertFromNum( std::string const src, bool exception ) 
-{
-	float	fres = strtof(src.c_str(), NULL);
-	double	dres = strtod(src.c_str(), NULL);
-	long	lres = strtol(src.c_str(), NULL, 10);
 
-	if (lres < ' ' || lres > '~')
-		std::cout << "Char : impossible\n";
-	else
-		std::cout << "Char : " << static_cast<char>(lres) << "\n";
-	
-	if (lres < INT_MIN || lres > INT_MAX || exception)
-		std::cout << "Int : impossible\n";
-	else
-		std::cout << "Int : " << static_cast<int>(lres) << "\n";
-
-	if (static_cast<double>(lres) == dres && src.length() < 6) {
-		std::cout << "Float : " << fres << ".0f\n";
-		std::cout << "Double : " << dres << ".0" << std::endl;
-	}
-	else {
-		std::cout << "Float : " << fres << "f\n";
-		std::cout << "Double : " << dres << std::endl;
-	}
-
-}
-
-static bool checkArgs( std::string src ) 
-{
-	std::string::iterator	it = src.begin();
-
-	if (*it != '-' && *it != '+' && !isdigit(*it))
-		return (false);
-	it++;
-	while (it != src.end()) {
-		if (*it == '.'){
-			it++;
-			if (!isdigit(*it))
-				return (false);
-		}
-		if (*it == 'f'){
-			it++;
-			if (it != src.end())
-				return (false);
-			else
-				return (true);
-		}
-		if (!isdigit(*it++))
-			return (false);
-	}
-	return (true);
-}
-
-void ScalarConverter::convert ( std::string const src ) 
+class Serializer
 {
 
-	std::string	type[6] = { "-inf", "+inf", "nan", "-inff", "+inff", "nanf"};
-	bool		exception = false;
+public:
 
-	for (int i = 0; i < 6; i++)
-		if (src == type[i]) {
-			exception = true;
-			break ;
-		}
+	static uintptr_t	serialize ( Data * data );
+	static Data *		deserialize ( uintptr_t raw );
 
-	if (src.length() > 1 && !exception && !checkArgs(src)){
-		std::cout << "incorrect input" << std::endl;
-		return ;
-	}
 
-	if (!std::isdigit(src.at(0)))
-	{
-		if (src.length() == 1) {
-			convertFromChar(src);
-			return ;
-		}
-	}
+private:
 
-	convertFromNum(src, exception);
-}
+	Serializer ( void );
+	Serializer ( Serializer const & src );
+	~Serializer ( void );
+
+	Serializer & operator= ( Serializer const & src );
+};
+
+
+std::ostream &	operator<< ( std::ostream & out, Data & src );
+
+#endif 
