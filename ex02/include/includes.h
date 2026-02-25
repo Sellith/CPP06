@@ -35,4 +35,12 @@
 # include "B.hpp"
 # include "C.hpp"
 
+# define RED	"\e[1;91m"
+# define GREEN	"\e[1;92m"
+# define YELLOW	"\e[1;93m"
+# define PURPLE	"\e[1;95m"
+# define CYAN	"\e[1;96m"
+# define WHITE	"\e[1;97m"
+# define RESET	"\e[0m"
+
 #endif
