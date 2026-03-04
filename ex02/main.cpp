@@ -63,23 +63,24 @@ static void identify ( Base * p )
 
 static void identify ( Base & p )
 {
+	Base tmp;
 	try {
-		dynamic_cast<A&>(p);
-		(void)p;
+		tmp = dynamic_cast<A&>(p);
+		(void)tmp;
 		std::cout << WHITE << "identify (reference) : A class detected !" << RESET << std::endl;
 		return ;
 	}
 	catch (std::exception &e) {}
 	try {
-		dynamic_cast<B&>(p);
-		(void)p;
+		tmp = dynamic_cast<B&>(p);
+		(void)tmp;
 		std::cout << WHITE << "identify (reference) : B class detected !" << RESET << std::endl;
 		return ;
 	}
 	catch (std::exception &e) {}
 	try {
-		dynamic_cast<C&>(p);
-		(void)p;
+		tmp = dynamic_cast<C&>(p);
+		(void)tmp;
 		std::cout << WHITE << "identify (reference) : C class detected !" << RESET << std::endl;
 		return ;
 	}
