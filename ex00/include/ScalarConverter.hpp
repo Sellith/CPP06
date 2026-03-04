@@ -39,6 +39,8 @@ class ScalarConverter {
 
 public: 
 
+	ScalarConverter & operator= ( ScalarConverter const & src );
+	
     static void convert ( std::string const src );
 
 private:
